@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/elrrrrrrr/pokeball/issues"
   },
-  "homepage": "https://github.com/elrrrrrrr/pokeball"
+  "homepage": "https://github.com/elrrrrrrr/pokeball",
+  "dependencies": {
+    "fs-extra": "^0.12.0"
+  }
 }
