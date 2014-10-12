@@ -1,0 +1,19 @@
+{
+  "name": "pokeball",
+  "version": "0.0.0",
+  "description": "save load yeoman",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/elrrrrrrr/pokeball.git"
+  },
+  "author": "elrrrrrrr@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elrrrrrrr/pokeball/issues"
+  },
+  "homepage": "https://github.com/elrrrrrrr/pokeball"
+}
