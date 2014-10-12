@@ -4,15 +4,14 @@ var fs = require('fs-extra');
 // var pokemonList = fs.readdirSync('pokemon');
 
 //如果不是文件夹 抛出异常
-function catchPoke (name, path) {
+function catchPoke(name, path) {
 
 	var wild = pathUtil.join(process.cwd(), name);
 	var nick = pathUtil.join(__dirname, 'pokemon', name);
 
-
 	var exits = fs.existsSync(nick);
 
-	if (! exits) {
+	if (!exits) {
 		fs.copy(wild, nick, function(err) {
 			if (err) {
 				console.log('error when copy', err)
@@ -24,12 +23,10 @@ function catchPoke (name, path) {
 	}
 }
 
-function releasePoke (name, path) {
+function releasePoke(name, path) {
+
 	var poke = pathUtil.join(__dirname, 'pokemon/' + name);
-
-	console.log(poke)
-
-	var exits = fs.existsSync(storePath);
+	var exits = fs.existsSync(poke);
 
 	if (exits) {
 		fs.copy(poke, pathUtil.join(process.cwd(), name), function(err) {
@@ -43,5 +40,8 @@ function releasePoke (name, path) {
 	}
 }
 
-catchPoke('t')
+function killPoke(name) {
 
+}
+
+catchPoke('t')
