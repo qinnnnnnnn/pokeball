@@ -6,6 +6,8 @@ var facade = require('commander');
 var pkg = require('./package.json');
 // var pokemonList = fs.readdirSync('pokemon');
 
+
+// primary comamnd , support type pokemon directly . [TODO]
 facade
   .command('catch')
   .description('catch a pokemon')
@@ -18,22 +20,34 @@ facade
 	.command('list')
 	.description('list current pokemon')
 	.action(showList)
+facade
+	.command('kill')
+	.description('kill a pokemon')
+	.action(temp)
 
 facade
  .version(pkg.version)
  .usage('catch')
- //.option('-R, --releasePoke', 'release a pokemon', handlerRelease)
+ .option('-f, --force', 'processing in force [TODO]')
+ .option('-r, --rename', 'rename the pokemon [TODO]')
+ .option('-m, --merge', 'merge two pokemon [TODO]')
  .parse(process.argv);
 
 function showList(type, cb) {
+
+
+	var isDictionary = function(name) {
+		return fs.lstatSync(name).isDirectory();
+	}
+
 	inquirer.prompt([
 	  {
 	    type: "list",
 	    name: "pokemon",
 	    message: "pick a pokemon",
-	    choices: type == 'release' ?
-	    						fs.readdirSync(pathUtil.join(__dirname, 'pokemon')) :
-	    						fs.readdirSync(process.cwd())
+	    choices: type == 'catch' ?
+	    						fs.readdirSync(process.cwd()).filter(isDictionary) :
+	    						fs.readdirSync(pathUtil.join(__dirname, 'pokemon'))
 	    						//.concat([ new inquirer.Separator(), 'exit'])
 	  }
 	], function( answers ) {
