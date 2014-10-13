@@ -24,7 +24,7 @@ facade
 facade
 	.command('kill')
 	.description('kill a pokemon')
-	.action(temp)
+	.action(handlerKill)
 
 facade
  .version(pkg.version)
@@ -108,8 +108,23 @@ function releasePoke(name, path) {
 	}
 }
 
-function killPoke(name) {
+function handlerKill() {
+	showList( 'kill', killPoke )
+}
 
+function killPoke(name) {
+	var poke = pathUtil.join(__dirname, 'pokemon/' + name);
+	var exits = fs.existsSync(poke);
+
+	if (exits) {
+		fs.remove(poke, function(err){
+		  if (err) return console.error(err);
+
+		  console.log("success!")
+		});
+	} else {
+		console.log('no ' + name);
+	}
 }
 
 function listPoke(name) {
