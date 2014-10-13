@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var pathUtil = require('path');
 var fs = require('fs-extra');
 var inquirer = require('inquirer');
