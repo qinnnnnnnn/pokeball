@@ -9,10 +9,11 @@ var pkg = require('./package.json');
 
 
 // primary comamnd , support type pokemon directly . [TODO]
-facade
-  .command('catch')
-  .description('catch a pokemon')
-  .action(handlerCatch);
+
+// facade
+//   .command('catch')
+//   .description('catch a pokemon')
+//   .action(handlerCatch);
 facade
   .command('release')
   .description('release a pokemon')
@@ -25,6 +26,22 @@ facade
   .command('kill')
   .description('kill a pokemon')
   .action(handlerKill)
+facade
+  .command('catch')
+  .description('run setup commands for all envs')
+  .option("-n, --name [type]", "Which setup mode to use")
+  .option("-p, --path [path]", "Which setup mode to use")
+  .action(function(options){
+    if (options.name || options.path) {
+      var name = options.name || 'test';
+          path = options.path || process.cwd();
+      console.log(options.path);
+      catchPoke(name,path);
+    }else{
+      handlerCatch();
+    };
+  });
+
 
 facade
  .version(pkg.version)
@@ -34,8 +51,8 @@ facade
  .option('-m, --merge', 'merge two pokemon [TODO]')
  .parse(process.argv);
 
-function showList(type, cb) {
 
+function showList(type, cb) {
 
   var isDictionary = function(name) {
     return fs.lstatSync(name).isDirectory();
@@ -65,21 +82,27 @@ function temp() {
 //如果不是文件夹 抛出异常
 function catchPoke(name, path) {
 
-  var wild = pathUtil.join(process.cwd(), name);
+  var wild = pathUtil.join(path, name);
   var nick = pathUtil.join(__dirname, 'pokemon', name);
 
-  var exits = fs.existsSync(nick);
+  var nickExits = fs.existsSync(nick),
+      wildExits = fs.existsSync(wild);
 
-  if (!exits) {
-    fs.copy(wild, nick, function(err) {
-      if (err) {
-        console.log('error when copy', err)
-      }
-      console.log('OKK')
-    })
-  } else {
-    console.log('already exits');
-  }
+  if (wildExits) {
+    if (!nickExits) {
+      fs.copy(wild, nick, function(err) {
+        if (err) {
+          console.log('error when copy', err)
+        }
+        console.log('OKK')
+      })
+    } else {
+      console.log('already exits');
+    }
+  }else{
+      console.log(wild + ' hasn\'t exit');
+  };
+  
 }
 
 function handlerRelease() {
