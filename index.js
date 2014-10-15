@@ -31,14 +31,13 @@ facade
   .description('run setup commands for all envs')
   .option("-n, --name [type]", "Which setup mode to use")
   .option("-p, --path [path]", "Which setup mode to use")
-  .action(function(options){
-    if (options.name || options.path) {
-      var name = options.name || 'test';
-          path = options.path || process.cwd();
-      console.log(options.path);
-      catchPoke(name,path);
+  .action(
+  function(options){
+    if (options.path) {
+      var path = options.path || process.cwd();
+      catchPoke('', options.name, path);
     }else{
-      handlerCatch();
+      handlerCatch(options.name);
     };
   });
 
@@ -52,7 +51,7 @@ facade
  .parse(process.argv);
 
 
-function showList(type, cb) {
+function showList(type, cb, nickname) {
 
   var isDictionary = function(name) {
     return fs.lstatSync(name).isDirectory();
@@ -69,8 +68,8 @@ function showList(type, cb) {
                   //.concat([ new inquirer.Separator(), 'exit'])
     }
   ], function( answers ) {
-      
-      cb && cb( answers.pokemon )
+
+      cb && cb( answers.pokemon,nickname )
       //console.log( JSON.stringify(answers, null, "  ") );
     }); 
 }
@@ -80,11 +79,16 @@ function temp() {
 }
 
 //如果不是文件夹 抛出异常
-function catchPoke(name, path) {
+function catchPoke(name, nickname, path) {
 
-  var wild = pathUtil.join(path, name);
-  var nick = pathUtil.join(__dirname, 'pokemon', name);
+  var wild = (path && path!= process.cwd()) ? 
+      pathUtil.normalize(path) : 
+      pathUtil.join(process.cwd(), name);
+  var nick = nickname ? 
+      pathUtil.join(__dirname, 'pokemon', nickname) : 
+      pathUtil.join(__dirname, 'pokemon', name ? name : pathUtil.basename(path));
 
+  // console.log('wild=' +wild+',nick='+nick);
   var nickExits = fs.existsSync(nick),
       wildExits = fs.existsSync(wild);
 
@@ -110,8 +114,8 @@ function handlerRelease() {
   
 }
 
-function handlerCatch() {
-  showList( 'catch', catchPoke )
+function handlerCatch(nickname, path) {
+  showList( 'catch', catchPoke, nickname )
 }
 
 function releasePoke(name, path) {
