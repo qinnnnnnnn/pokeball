@@ -50,6 +50,7 @@ facade
  .option('-m, --merge', 'merge two pokemon [TODO]')
  .parse(process.argv);
 
+if (!facade.args.length) facade.help();
 
 function showList(type, cb, nickname) {
 
