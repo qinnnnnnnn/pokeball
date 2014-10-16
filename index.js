@@ -5,15 +5,7 @@ var inquirer = require('inquirer');
 var facade = require('commander');
 
 var pkg = require('./package.json');
-// var pokemonList = fs.readdirSync('pokemon');
 
-
-// primary comamnd , support type pokemon directly . [TODO]
-
-// facade
-//   .command('catch')
-//   .description('catch a pokemon')
-//   .action(handlerCatch);
 facade
   .command('release')
   .description('release a pokemon')
@@ -66,12 +58,9 @@ function showList(type, cb, nickname) {
       choices: type == 'catch' ?
                   fs.readdirSync(process.cwd()).filter(isDictionary) :
                   fs.readdirSync(pathUtil.join(__dirname, 'pokemon'))
-                  //.concat([ new inquirer.Separator(), 'exit'])
     }
   ], function( answers ) {
-
       cb && cb( answers.pokemon,nickname )
-      //console.log( JSON.stringify(answers, null, "  ") );
     }); 
 }
 
@@ -88,8 +77,6 @@ function catchPoke(name, nickname, path) {
   var nick = nickname ? 
       pathUtil.join(__dirname, 'pokemon', nickname) : 
       pathUtil.join(__dirname, 'pokemon', name ? name : pathUtil.basename(path));
-
-  // console.log('wild=' +wild+',nick='+nick);
   var nickExits = fs.existsSync(nick),
       wildExits = fs.existsSync(wild);
 
@@ -153,8 +140,4 @@ function killPoke(name) {
   } else {
     console.log('no ' + name);
   }
-}
-
-function listPoke(name) {
-
 }
