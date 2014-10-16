@@ -29,8 +29,8 @@ facade
 facade
   .command('catch')
   .description('run setup commands for all envs')
-  .option("-n, --name [type]", "Which setup mode to use")
-  .option("-p, --path [path]", "Which setup mode to use")
+  .option("-n, --name [type]", "set nickname of the pokemon")
+  .option("-p, --path [path]", "set path of source folder")
   .action(
   function(options){
     if (options.path) {
