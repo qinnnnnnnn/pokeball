@@ -21,17 +21,9 @@ facade
 facade
   .command('catch')
   .description('run setup commands for all envs')
-  .option("-n, --name [type]", "set nickname of the pokemon")
+  .option("-n, --name [name]", "set nickname of the pokemon")
   .option("-p, --path [path]", "set path of source folder")
-  .action(
-  function(options){
-    if (options.path) {
-      var path = options.path || process.cwd();
-      catchPoke('', options.name, path);
-    }else{
-      handlerCatch(options.name);
-    };
-  });
+  .action(handlerCatch);
 
 
 facade
@@ -70,7 +62,6 @@ function temp() {
 
 //如果不是文件夹 抛出异常
 function catchPoke(name, nickname, path) {
-
   var wild = (path && path!= process.cwd()) ? 
       pathUtil.normalize(path) : 
       pathUtil.join(process.cwd(), name);
@@ -102,8 +93,15 @@ function handlerRelease() {
   
 }
 
-function handlerCatch(nickname, path) {
-  showList( 'catch', catchPoke, nickname )
+function handlerCatch(options) {
+  var name = ((typeof options.name)=='boolean')? false : options.name;
+  var path = ((typeof options.path)=='boolean')? false : options.path;
+  if (path) {
+    path = options.path || process.cwd();
+    catchPoke('', name, path);
+  }else{
+    showList( 'catch', catchPoke, name);
+  };
 }
 
 function releasePoke(name, path) {
